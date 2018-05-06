@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('BuildUI') {
       steps {
-        echo 'done'
+        sh 'ls -a'
       }
     }
   }
