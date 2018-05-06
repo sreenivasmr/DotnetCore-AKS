@@ -1,0 +1,124 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: eshopcatalog
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eshopcatalog
+    spec:
+      containers:
+      - name: eshopcatalog
+        image: srajaramaksregistry.azurecr.io/eshopcatalog:v1
+        ports:
+        - containerPort: 80
+          name: eshopcatalog
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshopcatalog
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: eshopcatalog
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: eshopmovies
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eshopmovies
+    spec:
+      containers:
+      - name: eshopmovies
+        image: srajaramaksregistry.azurecr.io/eshopmovies:v1
+        ports:
+        - containerPort: 80
+          name: eshopmovies
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshopmovies
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: eshopmovies
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: eshopusers
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eshopusers
+    spec:
+      containers:
+      - name: eshopusers
+        image: srajaramaksregistry.azurecr.io/eshopusers:v1
+        ports:
+        - containerPort: 80
+          name: eshopusers
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshopusers
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: eshopusers
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: eshop-ui
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: eshop-ui
+    spec:
+      containers:
+      - name: eshop-ui
+        image: srajaramaksregistry.azurecr.io/eshopui:v1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshop-ui
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: eshop-ui
